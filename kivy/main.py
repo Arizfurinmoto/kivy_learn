@@ -6,6 +6,17 @@ from kivy.uix.gridlayout import GridLayout
 from kivy.uix.stacklayout import StackLayout
 from kivy.uix.button import Button
 from kivy.metrics import dp
+from kivy.properties import StringProperty
+
+
+class WidgetsExample(GridLayout):
+    my_text = StringProperty("Hello!")
+    count = 0
+
+    def on_button_click(self):
+        print("Button clicked")
+        self.count += 1
+        self.my_text = "You clicked " + str(self.count) + " times!"
 
 
 class StackLayoutExample(StackLayout):
