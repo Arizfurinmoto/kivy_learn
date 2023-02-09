@@ -11,8 +11,19 @@ BoxLayoutExample:
         # x, center_x, right
         # y, center_y, top
         pos_hint: {"center_y": 0.5}
-    Button:
-        text: "B"
+    
+    BoxLayout:
+        orientation: "vertical"
+        spacing: "10dp"
+        Button:
+            text: "B1"
+        Button:
+            text: "B2"
+        Button:
+            text: "B3"
+        Button:
+            text: "B4"
+    
     Label:
         text: "C"
 
