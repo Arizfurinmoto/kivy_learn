@@ -30,12 +30,17 @@ WidgetsExample:
         #on_value: root.on_slider_value(self)
         orientation: "vertical"
         disabled: not my_switch.active
-    Label:
-        #text: root.slider_value_txt
-        text: str(int(my_slider.value))
-        font_name: "fonts/Lcd.ttf"
-        font_size: "40dp"
-        color: 0, .5, 0.8, 1
+    BoxLayout:
+        Label:
+            #text: root.slider_value_txt
+            text: str(int(my_slider.value))
+            font_name: "fonts/Lcd.ttf"
+            font_size: "40dp"
+            color: 0, .5, 0.8, 1
+        ProgressBar:
+            max: 100
+            value: my_slider.value
+            
 
 
 <PageLayoutExample@PageLayout>:
