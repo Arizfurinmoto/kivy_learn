@@ -12,11 +12,22 @@ from kivy.properties import StringProperty
 class WidgetsExample(GridLayout):
     my_text = StringProperty("Hello!")
     count = 0
+    state = "OFF"
 
     def on_button_click(self):
-        print("Button clicked")
-        self.count += 1
-        self.my_text = "You clicked " + str(self.count) + " times!"
+        #print("Button clicked")
+        if self.state == "UPP":
+            self.count += 1
+            self.my_text = str(self.count)
+
+    def on_toggle_button_state(self, widget):
+        print("Toggle state: " + widget.state)
+        if widget.state == "normal":
+            widget.text = "OFF"
+            self.state = "OFF"
+        else:
+            widget.text = "UPP"
+            self.state = "UPP"
 
 
 class StackLayoutExample(StackLayout):
