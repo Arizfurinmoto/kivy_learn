@@ -29,6 +29,9 @@ class WidgetsExample(GridLayout):
             widget.text = "UPP"
             self.state = True
 
+    def on_switch_active(self, widget):
+        print("Switch " + str(widget.active))
+
 
 class StackLayoutExample(StackLayout):
     def __init__(self, **kwargs):
