@@ -11,6 +11,7 @@ from kivy.properties import StringProperty, BooleanProperty
 
 class WidgetsExample(GridLayout):
     my_text = StringProperty("Hello!")
+    text_input_str = StringProperty("foo")
     count = 0
     state = BooleanProperty(False)
     #slider_value_txt = StringProperty("Slider value")
@@ -36,6 +37,9 @@ class WidgetsExample(GridLayout):
     # def on_slider_value(self, widget):
         #print("Slider: " + str(int(widget.value)))
         #self.slider_value_txt = str(int(widget.value))
+
+    def on_text_validate(self, widget):
+        self.text_input_str = widget.text
 
 
 class StackLayoutExample(StackLayout):
