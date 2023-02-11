@@ -12,6 +12,11 @@ CanvasExample1:
         Ellipse:
             pos: 200, 500
             size: s, s/2
+        Line:
+            #points: (x, y, x2, y2)
+            #points: (0, 0, 100, 100, 200, 0, self.width, 100)
+            points: (0, 0, self.width/4, 100, self.width/2, 0, self.width*3/4, 100, self.width, 0)
+            width: 2
 
 
 <ImagesExample@GridLayout>:
