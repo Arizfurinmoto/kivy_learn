@@ -132,6 +132,8 @@ class CanvasExample5(Widget):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.ball_size = dp(50)
+        self.vx = dp(3)
+        self.vy = dp(3)
         with self.canvas:
             self.ball = Ellipse(pos=(self.center), size=(
                 self.ball_size, self.ball_size))
@@ -144,7 +146,28 @@ class CanvasExample5(Widget):
 
     def update(self, dt):  # dt - delta time
         x, y = self.ball.pos
-        self.ball.pos = (x+4, y)
+
+        x += self.vx
+        y += self.vy
+
+        # right
+        if x+self.ball_size >= self.width:
+            x = self.width - self.ball_size
+            self.vx *= -1
+        # left
+        elif x <= 0:
+            x = 0
+            self.vx *= -1
+        # top
+        if y + self.ball_size >= self.height:
+            y = self.height - self.ball_size
+            self.vy *= -1
+        # bottom
+        elif y <= 0:
+            y = 0
+            self.vy *= -1
+
+        self.ball.pos = (x, y)
 
 
 TheLabApp().run()
