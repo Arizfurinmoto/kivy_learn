@@ -7,8 +7,9 @@ from kivy.uix.stacklayout import StackLayout
 from kivy.uix.button import Button
 from kivy.metrics import dp
 from kivy.properties import StringProperty, BooleanProperty
-from kivy.graphics.vertex_instructions import Line, Rectangle
+from kivy.graphics.vertex_instructions import Line, Rectangle, Ellipse
 from kivy.graphics.context_instructions import Color
+from kivy.properties import Clock
 
 
 class WidgetsExample(GridLayout):
@@ -125,6 +126,25 @@ class CanvasExample4(Widget):
 
         x += inc
         self.rect.pos = (x, y)
+
+
+class CanvasExample5(Widget):
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self.ball_size = dp(50)
+        with self.canvas:
+            self.ball = Ellipse(pos=(self.center), size=(
+                self.ball_size, self.ball_size))
+        Clock.schedule_interval(self.update, 1/60)
+
+    def on_size(self, *args):
+        ##print("on size: "+str(self.width) + ", " + str(self.height))
+        self.ball.pos = (self.center_x-self.ball_size/2,
+                         self.center_y-self.ball_size/2)
+
+    def update(self, dt):  # dt - delta time
+        x, y = self.ball.pos
+        self.ball.pos = (x+4, y)
 
 
 TheLabApp().run()
