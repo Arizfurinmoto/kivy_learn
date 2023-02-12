@@ -106,7 +106,25 @@ class CanvasExample4(Widget):
             Color(0, 1, 0)
             Line(circle=(400, 200, 80), width=2)
             Line(rectangle=(700, 500, 150, 100), width=6)
-            Rectangle(pos=(700, 200), size=(150, 100))
+            self.rect = Rectangle(pos=(700, 200), size=(150, 100))
+
+    def on_button_a_click(self):
+        x, y = self.rect.pos
+        w, h = self.rect.size
+        inc = dp(10)
+
+        # my solution
+        # if self.width - (x+w) >= 10:
+        #inc = dp(10)
+        # elif self.width - (x+w) < 10:
+        #inc = self.width - (x+w)
+        # course soltion
+        diff = self.width - (x+w)
+        if diff < inc:
+            inc = diff
+
+        x += inc
+        self.rect.pos = (x, y)
 
 
 TheLabApp().run()
