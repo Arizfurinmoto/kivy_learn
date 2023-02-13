@@ -1,4 +1,4 @@
-CanvasExample5:
+CanvasExample6:
 
 #:set s dp(150)
 
@@ -47,6 +47,35 @@ CanvasExample5:
         pos: 100, 400
         text: "A"
         on_press: root.on_button_a_click()
+
+
+<CanvasExample6>:
+    # RelativeLayout:
+    # #canvas is always displayed at (0, 0) on the screen; the only exception when canvas behave differently is RelativeLayout
+    #     canvas:
+    #         Rectangle:
+    #     #text: "A"
+    #     pos: 100, 100
+    BoxLayout
+    #there is the need to modify size parameter by using root.size, because in this case BoxLayout is considered by default as a widget with size 100px x 100px
+        size: root.size
+        Widget:
+            canvas:
+                Color:
+                    rgb: .1, .7, .5
+                Rectangle:
+                # in the size it is not root.size, because root refers to <CanvasExample6>, while in this case the size of the Widget is needed
+                    size: self.size
+        #Widget:
+        RelativeLayout:
+            canvas:
+                Color:
+                    rgb: .7, .1, .5
+                Rectangle:
+                    size: self.size
+                    # thanks to self.pos this Rectangle mathces its position with the position of the previous figure
+                    # the same result can be achieved by using RelativeLayout instead of self.pos and the label of Widget
+                    #pos: self.pos
 
 
 <ImagesExample@GridLayout>:
