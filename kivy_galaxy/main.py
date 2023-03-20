@@ -1,12 +1,14 @@
-from kivy.properties import Clock
-from kivy.graphics.vertex_instructions import Line
-from kivy.graphics.context_instructions import Color
-from kivy.properties import NumericProperty
-from kivy.uix.widget import Widget
-from kivy.app import App
 from kivy.config import Config
 Config.set('graphics', 'width', '900')
 Config.set('graphics', 'height', '400')
+from kivy.app import App
+from kivy.uix.widget import Widget
+from kivy.properties import NumericProperty
+from kivy.graphics.context_instructions import Color
+from kivy.graphics.vertex_instructions import Line
+from kivy.properties import Clock
+from kivy.core.window import Window
+from kivy import platform
 
 
 class MainWidget(Widget):
@@ -24,7 +26,8 @@ class MainWidget(Widget):
     SPEED = 2
     current_offset_y = 0
 
-    SPEED_X = 3
+    SPEED_X = 12
+    current_speed_x = 0
     current_offset_x = 0
 
     def __init__(self, **kwargs):
@@ -32,8 +35,23 @@ class MainWidget(Widget):
         #print("INIT W:" + str(self.width) + " H:" + str(self.height))
         self.init_vertical_lines()
         self.init_horizontal_lines()
+
+        if self.is_desktop():
+            self._keyboard = Window.request_keyboard(self.keyboard_closed, self)
+            self._keyboard.bind(on_key_down=self.on_keyboard_down)
+            self._keyboard.bind(on_key_up=self.on_keyboard_up)
+
         Clock.schedule_interval(self.update, 1.0/60.0)
 
+    def keyboard_closed(self):
+        self._keyboard.unbind(on_key_down=self.on_keyboard_down)
+        self._keyboard.unbind(on_key_down=self.on_keyboard_up)
+        self._keyboard = None
+
+    def is_desktop(self):
+        if platform in ('linux', 'win', 'macosx'):
+            return True
+        return False
     def on_parent(self, widget, parent):
         #print("ON PARENT W: " + str(self.width) + " H:" + str(self.height))
         pass
@@ -119,6 +137,26 @@ class MainWidget(Widget):
 
         return int(tr_x), int(tr_y)
 
+    def on_touch_down(self, touch):
+        if touch.x < self.width/2:
+            self.current_speed_x = self.SPEED_X
+        else:
+            self.current_speed_x = -self.SPEED_X
+
+    def on_touch_up(self, touch):
+        print("UP")
+        self.current_speed_x = 0
+
+    def on_keyboard_down(self, keyboard, keycode, text, modifiers):
+        if keycode[1] == 'left':
+            self.current_speed_x = self.SPEED_X
+        elif keycode[1] == 'right':
+            self.current_speed_x = -self.SPEED_X
+        return True
+
+    def on_keyboard_up(self, keyboard, keycode):
+        self.current_speed_x = 0
+
     def update(self, dt):
         # print("Update")
         time_factor = dt*60
@@ -130,7 +168,7 @@ class MainWidget(Widget):
         if self.current_offset_y >= spacing_y:
             self.current_offset_y -= spacing_y
 
-        self.current_offset_x += self.SPEED_X*time_factor
+        self.current_offset_x += self.current_speed_x*time_factor
 
 
 class GalaxyApp(App):
