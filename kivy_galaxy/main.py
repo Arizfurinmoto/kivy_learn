@@ -10,6 +10,7 @@ from kivy.properties import Clock
 from kivy.core.window import Window
 from kivy import platform
 from kivy.graphics.vertex_instructions import Quad
+from random import randint
 
 
 class MainWidget(Widget):
@@ -26,7 +27,7 @@ class MainWidget(Widget):
     H_LINES_SPACING = .1  # percentage in screen width
     horizontal_lines = []
 
-    SPEED = 1
+    SPEED = 1.5
     current_offset_y = 0
     curent_y_loop = 0
 
@@ -34,7 +35,7 @@ class MainWidget(Widget):
     current_speed_x = 0
     current_offset_x = 0
 
-    NB_TILES = 4
+    NB_TILES = 16
     tiles = []
     tiles_coordinates = []
 
@@ -66,6 +67,7 @@ class MainWidget(Widget):
 
     def generate_tiles_coordinates(self):
         last_y = 0
+        last_x = 0
 
         for i in range(len(self.tiles_coordinates)-1, -1, -1):
             if self.tiles_coordinates[i][1] < self.curent_y_loop:
@@ -73,10 +75,25 @@ class MainWidget(Widget):
             
         if len(self.tiles_coordinates) > 0:
             last_coordinates = self.tiles_coordinates[-1]
+            last_x - last_coordinates[0]
             last_y = last_coordinates[1] + 1
 
         for i in range(len(self.tiles_coordinates), self.NB_TILES):
-            self.tiles_coordinates.append((0, last_y))
+            r = randint(0, 2)
+            # 0 -> straight
+            # 1 -> right
+            # 2 -> left 
+            self.tiles_coordinates.append((last_x, last_y))
+            if r == 1:
+                last_x += 1
+                self.tiles_coordinates.append((last_x, last_y))
+                last_y += 1
+                self.tiles_coordinates.append((last_x, last_y))
+            if r == 2:
+                last_x -= 1
+                self.tiles_coordinates.append((last_x, last_y))
+                last_y += 1
+                self.tiles_coordinates.append((last_x, last_y))
             last_y += 1
 
     def init_vertical_lines(self):
@@ -162,7 +179,7 @@ class MainWidget(Widget):
             self.curent_y_loop += 1
             self.generate_tiles_coordinates()
 
-        #self.current_offset_x += self.current_speed_x*time_factor
+        self.current_offset_x += self.current_speed_x*time_factor
 
 
 class GalaxyApp(App):
