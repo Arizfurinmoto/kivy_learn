@@ -27,7 +27,7 @@ class MainWidget(Widget):
     H_LINES_SPACING = .1  # percentage in screen width
     horizontal_lines = []
 
-    SPEED = 1.5
+    SPEED = 1
     current_offset_y = 0
     curent_y_loop = 0
 
@@ -45,6 +45,7 @@ class MainWidget(Widget):
         self.init_vertical_lines()
         self.init_horizontal_lines()
         self.init_tiles()
+        self.pre_fill_tiles_coordinates()
         self.generate_tiles_coordinates()
 
         if self.is_desktop():
@@ -58,16 +59,21 @@ class MainWidget(Widget):
         if platform in ('linux', 'win', 'macosx'):return True
         return False
 
-
     def init_tiles(self):
         with self.canvas:
             Color(1, 1, 1)
             for i in range(0, self.NB_TILES):
                 self.tiles.append(Quad())
 
+    def pre_fill_tiles_coordinates(self):
+        # 10 streight lines in the middle
+        for i in range(10):
+            self.tiles_coordinates.append((0, i))
+        pass
+
     def generate_tiles_coordinates(self):
-        last_y = 0
         last_x = 0
+        last_y = 0
 
         for i in range(len(self.tiles_coordinates)-1, -1, -1):
             if self.tiles_coordinates[i][1] < self.curent_y_loop:
@@ -101,6 +107,7 @@ class MainWidget(Widget):
                 self.tiles_coordinates.append((last_x, last_y))
                 last_y += 1
                 self.tiles_coordinates.append((last_x, last_y))
+            
             last_y += 1
 
     def init_vertical_lines(self):
