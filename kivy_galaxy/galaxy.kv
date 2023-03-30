@@ -18,3 +18,12 @@ MainWidget:
         font_name: 'fonts/Eurostile.ttf'
         size_hint: .15, .15
         pos_hint: {"x": 0, "top": 1}
+    Button:
+        font_size: dp(20)
+        font_name: 'fonts/Eurostile.ttf'
+        text: "SOUND"
+        pos_hint: {"right": 1, "top": 1}
+        size_hint: .1, .1
+        on_press: root.on_sound_button_pressed()
+        background_normal: ''
+        background_color: 0, 54, 201, .85

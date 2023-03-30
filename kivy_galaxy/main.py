@@ -5,15 +5,12 @@ Config.set('graphics', 'width', '900')
 Config.set('graphics', 'height', '400')
 from kivy.app import App
 from kivy.uix.widget import Widget
-from kivy.properties import NumericProperty
 from kivy.graphics.context_instructions import Color
-from kivy.graphics.vertex_instructions import Line, Triangle
-from kivy.properties import Clock
+from kivy.graphics.vertex_instructions import Line, Triangle, Quad
+from kivy.properties import Clock, NumericProperty, ObjectProperty, StringProperty
 from kivy.core.window import Window
 from kivy import platform
-from kivy.graphics.vertex_instructions import Quad
 from kivy.lang.builder import Builder
-from kivy.properties import ObjectProperty, StringProperty
 from kivy.core.audio import SoundLoader
 
 Builder.load_file("menu.kv")
@@ -66,6 +63,8 @@ class MainWidget(RelativeLayout):
     sound_music1 = None
     sound_restart = None
 
+    state_music = True
+
     def __init__(self, **kwargs):
         super(MainWidget, self).__init__(**kwargs)
         #print("INIT W:" + str(self.width) + " H:" + str(self.height))
@@ -116,7 +115,8 @@ class MainWidget(RelativeLayout):
 
 
     def is_desktop(self):
-        if platform in ('linux', 'win', 'macosx'):return True
+        if platform in ('linux', 'win', 'macosx'):
+            return True
         return False
 
     def init_ship(self):
@@ -168,7 +168,6 @@ class MainWidget(RelativeLayout):
         # 10 streight lines in the middle
         for i in range(10):
             self.tiles_coordinates.append((0, i))
-        pass
 
     def generate_tiles_coordinates(self):
         last_x = 0
@@ -180,7 +179,7 @@ class MainWidget(RelativeLayout):
             
         if len(self.tiles_coordinates) > 0:
             last_coordinates = self.tiles_coordinates[-1]
-            last_x - last_coordinates[0]
+            last_x = last_coordinates[0]
             last_y = last_coordinates[1] + 1
 
         for i in range(len(self.tiles_coordinates), self.NB_TILES):
@@ -324,6 +323,24 @@ class MainWidget(RelativeLayout):
         self.restart_game()
         self.state_game_has_started = True
         self.menu_widget.opacity = 0
+    
+    def on_sound_button_pressed(self):
+        if self.state_music:
+            self.state_music = False
+            self.sound_music1.volume = 0
+            self.sound_begin.volume = 0
+            self.sound_gameover_impact.volume = 0
+            self.sound_gameover_voice.volume = 0
+            self.sound_restart.volume = 0
+            self.sound_galaxy.volume = 0
+        else:
+            self.state_music = True
+            self.sound_music1.volume = 1
+            self.sound_begin.volume = .25
+            self.sound_gameover_impact.volume = .3
+            self.sound_gameover_voice.volume = .25
+            self.sound_restart.volume = .25
+            self.sound_galaxy.volume = .25
 
 class GalaxyApp(App):
     pass
