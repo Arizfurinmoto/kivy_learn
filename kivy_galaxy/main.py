@@ -13,7 +13,7 @@ from kivy.core.window import Window
 from kivy import platform
 from kivy.graphics.vertex_instructions import Quad
 from kivy.lang.builder import Builder
-from kivy.properties import ObjectProperty
+from kivy.properties import ObjectProperty, StringProperty
 
 Builder.load_file("menu.kv")
 
@@ -50,9 +50,12 @@ class MainWidget(RelativeLayout):
     SHIP_BASE_Y = 0.04
     ship = None
     ship_coordinates = [(0,0), (0,0), (0,0)]
-    state_game_has_started = False
 
+    state_game_has_started = False
     state_game_over = False
+
+    menu_title = StringProperty("G   A   L   A   X   Y")
+    menu_button_title = StringProperty("START")
 
     def __init__(self, **kwargs):
         super(MainWidget, self).__init__(**kwargs)
@@ -269,6 +272,8 @@ class MainWidget(RelativeLayout):
 
         if not self.check_ship_collision() and not self.state_game_over:
             self.state_game_over = True
+            self.menu_title = "G A M E  O V E R"
+            self.menu_button_title = "RESTART"
             self.menu_widget.opacity = 1
             print("Game Over!")
 
