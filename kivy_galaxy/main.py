@@ -13,6 +13,7 @@ from kivy.core.window import Window
 from kivy import platform
 from kivy.graphics.vertex_instructions import Quad
 from kivy.lang.builder import Builder
+from kivy.properties import ObjectProperty
 
 Builder.load_file("menu.kv")
 
@@ -21,6 +22,8 @@ class MainWidget(RelativeLayout):
     from user_actions import on_keyboard_down, on_keyboard_up, on_touch_down, on_touch_up, keyboard_closed
     perspective_point_x = NumericProperty(0)
     perspective_point_y = NumericProperty(0)
+
+    menu_widget = ObjectProperty()
 
     V_NB_LINES = 8
     V_LINES_SPACING = .4  # percentage in screen width
@@ -47,6 +50,7 @@ class MainWidget(RelativeLayout):
     SHIP_BASE_Y = 0.04
     ship = None
     ship_coordinates = [(0,0), (0,0), (0,0)]
+    state_game_has_started = False
 
     state_game_over = False
 
@@ -238,7 +242,7 @@ class MainWidget(RelativeLayout):
         self.update_tiles()
         self.update_ship()
         
-        if not self.state_game_over:
+        if not self.state_game_over and self.state_game_has_started:
             speed_y = self.SPEED *self.height
             self.current_offset_y += speed_y * time_factor / 100
 
@@ -253,8 +257,13 @@ class MainWidget(RelativeLayout):
 
         if not self.check_ship_collision() and not self.state_game_over:
             self.state_game_over = True
+            self.menu_widget.opacity = 1
             print("Game Over!")
 
+    def on_menu_button_pressed(self):
+        print("Hejo")
+        self.state_game_has_started = True
+        self.menu_widget.opacity = 0
 
 class GalaxyApp(App):
     pass
