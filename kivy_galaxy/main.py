@@ -1,3 +1,5 @@
+from random import randint
+from kivy.uix.relativelayout import RelativeLayout
 from kivy.config import Config
 Config.set('graphics', 'width', '900')
 Config.set('graphics', 'height', '400')
@@ -10,10 +12,11 @@ from kivy.properties import Clock
 from kivy.core.window import Window
 from kivy import platform
 from kivy.graphics.vertex_instructions import Quad
-from random import randint
+from kivy.lang.builder import Builder
 
+Builder.load_file("menu.kv")
 
-class MainWidget(Widget):
+class MainWidget(RelativeLayout):
     from transforms import transform, transform_2D, transform_perspective
     from user_actions import on_keyboard_down, on_keyboard_up, on_touch_down, on_touch_up, keyboard_closed
     perspective_point_x = NumericProperty(0)

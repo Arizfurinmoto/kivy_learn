@@ -5,7 +5,7 @@ def on_touch_down(self, touch):
         self.current_speed_x = -self.SPEED_X
 
 def on_touch_up(self, touch):
-    print("UP")
+    #print("UP")
     self.current_speed_x = 0
 
 def on_keyboard_down(self, keyboard, keycode, text, modifiers):
