@@ -61,8 +61,7 @@ class MainWidget(RelativeLayout):
         self.init_horizontal_lines()
         self.init_tiles()
         self.init_ship()
-        self.pre_fill_tiles_coordinates()
-        self.generate_tiles_coordinates()
+        self.restart_game()
 
         if self.is_desktop():
             self._keyboard = Window.request_keyboard(self.keyboard_closed, self)
@@ -70,6 +69,19 @@ class MainWidget(RelativeLayout):
             self._keyboard.bind(on_key_up=self.on_keyboard_up)
 
         Clock.schedule_interval(self.update, 1.0/60.0)
+
+    def restart_game(self):
+        self.current_offset_y = 0
+        self.curent_y_loop = 0
+        self.current_speed_x = 0
+        self.current_offset_x = 0
+
+        self.tiles_coordinates = []
+        self.pre_fill_tiles_coordinates()
+        self.generate_tiles_coordinates()
+
+        self.state_game_over = False
+
 
     def is_desktop(self):
         if platform in ('linux', 'win', 'macosx'):return True
@@ -262,6 +274,7 @@ class MainWidget(RelativeLayout):
 
     def on_menu_button_pressed(self):
         print("Hejo")
+        self.restart_game()
         self.state_game_has_started = True
         self.menu_widget.opacity = 0
 
